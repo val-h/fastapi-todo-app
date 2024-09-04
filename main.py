@@ -49,3 +49,12 @@ def create_todo(todo: schemas.TodoCreate, db: Session = Depends(get_db)):
 def update_todo(todo_id: int, done: bool, db: Session = Depends(get_db)):
     db_todo = crud.update_todo(db, todo_id, done)
     return db_todo
+
+@app.delete("/todos/{todo_id}")
+def delete_todo(todo_id: int, db: Session = Depends(get_db)):
+    deleted_todo = crud.delete_todo(db, todo_id)
+    
+    if deleted_todo is None:
+        raise HTTPException(status_code=404, detail="Todo not found")
+
+    return deleted_todo

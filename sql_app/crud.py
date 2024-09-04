@@ -21,3 +21,12 @@ def update_todo(db: Session, todo_id: int, done: bool):
     db.commit()
     db.refresh(db_todo)
     return db_todo
+
+def delete_todo(db: Session, todo_id: int):
+    db_todo = db.query(models.Todo).filter(models.Todo.id == todo_id).first()
+    if db_todo is None:
+        return None
+
+    db.delete(db_todo)
+    db.commit()
+    return db_todo
